@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+    - name: Creating Folder
+      file:
+        path: /home/{{ ansible_user }}/{{ item }}
+        state: absent
+      loop:
+        - folder01
+        - folder02
+        - folder03
+    - name: Creating files
+      file:
+        path: /home/{{ ansible_user }}/{{ item.dir }}/{{ item.file }}
+        state: absent
+      with_items:
+        - { dir: "folder01", file: "file01"}
+        - { dir: "folder02", file: "file02"}
+        - { dir: "folder03", file: "file03"}

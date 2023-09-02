@@ -26,6 +26,17 @@ resource "aws_instance" "host02" {
 
 }
 
+resource "aws_instance" "host03" {
+  ami                    = "ami-01e5ff16fd6e8c542"
+  instance_type          = "t2.micro"
+  key_name               = "tcb-ansible-key"
+  vpc_security_group_ids = [aws_security_group.secgroup.id]
+
+  provisioner "local-exec" {
+    command = "sleep 30; ssh-keyscan ${self.private_ip} >> ~/.ssh/known_hosts"
+  }
+
+}
 
 resource "aws_security_group" "secgroup" {
 
@@ -65,4 +76,8 @@ output "host01_private_ip" {
 
 output "host02_private_ip" {
   value = aws_instance.host02.private_ip
+}
+
+output "host03_private_ip" {
+  value = aws_instance.host03.private_ip
 }
